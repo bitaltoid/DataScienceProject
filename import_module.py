@@ -29,6 +29,4 @@ class DataImportWebsite:
             columns = [element.text.strip() for element in row.find_all('td')]
             data.append([element for element in columns if element])
 
-        return pd.DataFrame(data, columns=headers)
-
-
+        return data, headers
