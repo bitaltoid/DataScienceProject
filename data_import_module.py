@@ -20,12 +20,14 @@ class DataImportWebsite:
 
         table = soup.find('table', {'class': "genTbl closedTbl historicalTbl"})
 
-        headers = [tx.get('data-col-name') for tx in soup.find_all('th') if tx.get('data-col-name') is not None]
+        headers = [tx.get('data-col-name') for tx in soup.find_all('th') if tx.get('data-col-name') is not None
+                   and tx.get('data-col-name') == 'date' or tx.get('data-col-name') == 'price']
 
         data = []
 
         for row in table.find_all('tr')[1:]:
-            columns = [element.text.strip() for element in row.find_all('td')]
+            # Scraping only the Date and Price column
+            columns = [element.text.strip() for element in row.find_all('td')[:2]]
             data.append([element for element in columns if element])
 
         return data, headers
