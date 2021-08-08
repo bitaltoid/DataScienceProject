@@ -20,8 +20,7 @@ class DataImportWebsite:
 
         table = soup.find('table', {'class': "genTbl closedTbl historicalTbl"})
 
-        headers = [tx.get('data-col-name') for tx in soup.find_all('th') if tx.get('data-col-name') is not None
-                   and tx.get('data-col-name') == 'date' or tx.get('data-col-name') == 'price']
+        headers = [tx.get('data-col-name') for tx in soup.find_all('th') if tx.get('data-col-name') is not None]
 
         data = []
 
@@ -30,4 +29,4 @@ class DataImportWebsite:
             columns = [element.text.strip() for element in row.find_all('td')[:2]]
             data.append([element for element in columns if element])
 
-        return data, headers
+        return headers[:2], [x[0] for x in data], [x[1] for x in data]
