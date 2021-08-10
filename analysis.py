@@ -3,7 +3,6 @@ import numpy as np
 
 
 class ModelParameters:
-
     def __init__(self, url):
         self.url = url
 
@@ -11,7 +10,7 @@ class ModelParameters:
         price_data = DataImportWebsite(self.url).get_data()[2]
         number_of_rows = len(DataImportWebsite(self.url).get_data()[2])
 
-        # Y variable for lsqt method
+        # Y variable for lstsq method
         y = np.array(price_data, dtype=float).reshape(number_of_rows, 1)
 
         # X var
