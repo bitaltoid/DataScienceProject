@@ -1,6 +1,5 @@
 from data_import_module import DataImportWebsite
 import numpy as np
-from matplotlib import pyplot
 
 
 class ModelParameters:
@@ -20,10 +19,4 @@ class ModelParameters:
         const = np.ones(number_of_rows, dtype=int)
         x = np.column_stack((t, const))
 
-        return np.linalg.lstsq(x, y, rcond=None)
-
-
-print(ModelParameters('https://www.investing.com/equities/tesla-motors-historical-data').get_params())
-
-# (array([[ -2.84605872],
-#        [704.83558442]]), array([7774.50562676]), 2, array([61.74050057,  2.26066118]))
+        return np.linalg.lstsq(x, y, rcond=None)[0]
