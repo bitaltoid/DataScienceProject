@@ -1,7 +1,7 @@
-# Tested and developed on investing.com, get data from /historical-data
-
 import requests
 from bs4 import BeautifulSoup
+
+# Tested and developed on investing.com, get data from /historical-data
 
 
 class DataImportWebsite:
