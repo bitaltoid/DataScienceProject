@@ -1,4 +1,4 @@
-from data_import_module import DataImportWebsite
+from data_import import DataImportWebsite
 import numpy as np
 
 
