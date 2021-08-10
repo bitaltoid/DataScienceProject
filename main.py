@@ -1,37 +1,29 @@
-import import_module
-import pandas as pd
+from data_import_module import DataImportWebsite
 import numpy as np
-import matplotlib.pyplot as plt
-
-test_object = import_module.ImportCSV("btc.csv")
-test_data = test_object.get_data()
-
-for column_name in ['24h Open (USD)', '24h High (USD)', '24h Low (USD)']:
-    del test_data[column_name]  # deleting useless data
-
-test_data["Date"] = pd.to_datetime(test_data["Date"])
-test_data["Date"] = test_data["Date"].dt.strftime("%d/%m")
+from matplotlib import pyplot
 
 
-class TrendCheck:
+class ModelParameters:
 
-    def __init__(self, row_number, data):  # [31297.10297669   216.57629318]
-        self.row_number = row_number
-        self.data = data
+    def __init__(self, url):
+        self.url = url
 
-    def least_squares_method(self):  # y - btc price, x - date
-        self.data["const"] = [1 for x in range(1, self.row_number + 1)]  # const column creation
-        self.data["t"] = [x for x in range(1, self.row_number + 1)]  # period numeration
-        x = self.data[["const", "t"]].to_numpy()
-        y = self.data["Closing Price (USD)"].to_numpy()
-        return np.linalg.lstsq(x, y, rcond=None)[0]
+    def get_params(self):
+        price_data = DataImportWebsite(self.url).get_data()[2]
+        number_of_rows = len(DataImportWebsite(self.url).get_data()[2])
+
+        # Y variable for lsqt method
+        y = np.array(price_data, dtype=float).reshape(number_of_rows, 1)
+
+        # X var
+        t = np.arange(start=1, stop=number_of_rows + 1).reshape(number_of_rows, 1)
+        const = np.ones(number_of_rows, dtype=int)
+        x = np.column_stack((t, const))
+
+        return np.linalg.lstsq(x, y, rcond=None)
 
 
-object2 = TrendCheck(len(test_data), test_data)
-plt.figure(figsize=[10, 7])
-ax = plt.axes()
-ax.scatter(test_data["Date"], test_data["Closing Price (USD)"])
-test_data["test"] = [x for x in range(1, len(test_data) + 1)]
-ax.plot(test_data["Date"], test_data["test"] * object2.least_squares_method()[1] + object2.least_squares_method()[0],
-        'r')
-plt.show()
+print(ModelParameters('https://www.investing.com/equities/tesla-motors-historical-data').get_params())
+
+# (array([[ -2.84605872],
+#        [704.83558442]]), array([7774.50562676]), 2, array([61.74050057,  2.26066118]))
