@@ -30,4 +30,4 @@ class Forecast:
         vfun = np.vectorize(lambda x: self.model_coefs[0][0] * x + self.model_coefs[1][0])
 
         return (vfun(np.arange(start=self.prediction_index + 1, stop=self.prediction_index + 6))).\
-            reshape((self.prediction_index + 6 - (self.prediction_index + 1), 1))
+            reshape(1, (self.prediction_index + 6 - (self.prediction_index + 1)))
