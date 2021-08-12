@@ -1,5 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
+import locale
+locale.setlocale(locale.LC_ALL, 'en_US.UTF-8')
 
 # Tested and developed on investing.com, get data from /historical-data
 
@@ -29,4 +31,4 @@ class DataImportWebsite:
             columns = [element.text.strip() for element in row.find_all('td')[:2]]
             data.append([element for element in columns if element])
 
-        return headers[:2], [x[0] for x in data], [x[1] for x in data]
+        return headers[:2], [x[0] for x in data][::-1], [locale.atof(x[1]) for x in data][::-1]
